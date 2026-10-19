@@ -3,7 +3,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/belier-bong/belier-room/main/install.sh | zsh
 # 하는 일: 실행 도구(Node) 준비 → '데스크탑 › 프로젝트 › belier-분석실' 깔기 → 접속 키 넣기 → 작업 규칙·데이터 사전 받기 → 연결 확인.
 # 관리자 비밀번호 필요 없음. 모든 파일은 내 홈 폴더 안에만. 다시 실행하면 도구만 새로 바꾸고 내가 만든 보고서·쿼리는 그대로.
-# 접속 키는 이 저장소에 없습니다(봉주에게 따로 받음). AirDrop 으로 받은 '접속키.txt' 가 다운로드·데스크탑에 있으면 자동으로 찾습니다.
+# 접속 키는 이 저장소에 없습니다(봉주에게 따로 받음). AirDrop 으로 받은 'belier-key.txt' 가 다운로드·데스크탑에 있으면 자동으로 찾습니다.
 set -e
 APP="$HOME/.belier-data"
 ROOM="$HOME/Desktop/프로젝트/belier-분석실"
@@ -46,11 +46,13 @@ rm -rf "$SRC"
 echo "2) 분석실 폴더: $ROOM"
 "$(dirname "$NODE")/npm" install --prefix "$ROOM" --no-audit --no-fund --loglevel=error >/dev/null 2>&1 || fail "조회 프로그램 설치 실패(인터넷 확인)."
 
-# 3) 접속 키: 이미 있으면 그대로 → 다운로드·데스크탑의 '접속키*.txt' → 직접 붙여넣기
+# 3) 접속 키: 이미 있으면 그대로 → 다운로드·데스크탑의 'belier-key*.txt' → 직접 붙여넣기
 if grep -q '^DATABASE_URL=postgresql://team_ro' "$ROOM/.env" 2>/dev/null; then
   echo "3) 접속 키: 이미 있음"
 else
-  KEYF="$(ls -t "$HOME/Downloads/"접속키*.txt "$HOME/Desktop/"접속키*.txt 2>/dev/null | head -1 || true)"
+  # AirDrop 으로 받은 키 파일(가장 최근 것). 이름은 belier-key.txt(같은 이름이 있으면 'belier-key 2.txt' 처럼 받아짐)
+  CANDS=( "$HOME"/Downloads/belier-key*.txt(N.om) "$HOME"/Desktop/belier-key*.txt(N.om) "$HOME"/Downloads/접속키*.txt(N.om) )
+  KEYF="${CANDS[1]}"
   if [ -n "$KEYF" ]; then URL="$(tr -d '\r\n ' < "$KEYF")"; else
     echo "3) 봉주에게 받은 접속 키를 붙여넣고 Enter (화면에 보이지 않습니다)"
     read -rs "URL?   키: " < /dev/tty; echo
