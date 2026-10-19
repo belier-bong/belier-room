@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(zsh scripts/q.sh:*)",
+      "Bash(zsh scripts/xlsx.sh:*)",
+      "Bash(date:*)",
+      "Read(./**)",
+      "Write(./reports/**)",
+      "Write(./sql/**)",
+      "Edit(./sql/**)"
+    ]
+  }
+}

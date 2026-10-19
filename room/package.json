@@ -1,0 +1,10 @@
+{
+  "name": "belier-analysis-room",
+  "private": true,
+  "type": "module",
+  "description": "BELIER 분석실(팀원 PC용) — 읽기 전용 조회·엑셀 보고서 도구",
+  "dependencies": {
+    "exceljs": "4.4.0",
+    "pg": "8.13.1"
+  }
+}
